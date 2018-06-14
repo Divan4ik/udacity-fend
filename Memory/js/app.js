@@ -64,7 +64,7 @@
 	 		Game.Gui.init({
 				moves: Game.Statistics.get('moves'),
 				stars: Game.Statistics.get('stars'),
-			});	 		
+			});
 	 	},
 
 	 	restart: function() {
@@ -82,17 +82,20 @@
 	 	},
 
 	 	win: function() {
-
+			var m = Game.Statistics.get('moves');
+			var t = Game.Statistics.get('time');
+			var message = 'you`v done with ' + m + ' moves in ' + t + ' seconds!';
+			alert(message);
 	 	},
 
 	 	turn: function(data) {
 
 	 		Game.Turn.execute(data);
 
-	 		if(Game.Board.noMatchedLeft()) 
+	 		if(Game.Board.noMatchedLeft())
 	 			this.win();
 	 	},
-	 	
+
 	 	isStarted: function() {
 	 		return this.started
 	 	},
@@ -135,13 +138,12 @@
 
 	 	update: function(data) {
 	 		this.movesContainer.innerText = data.moves;
+			this.starsContainer.innerText = '';
 	 		var dFrag = d.createDocumentFragment();
-
 	 		while(data.stars > 0) {
 	 			dFrag.appendChild( this.getStarsTemplate() );
 	 			data.stars--;
 	 		}
-
 
 	 		this.starsContainer.appendChild(dFrag);
 
@@ -152,14 +154,12 @@
 	 	},
 
 	 	getStarsTemplate: function() {
-	 		if(!this.cachedBlock) {
-	 			var liBlock = d.createElement('li');
-	 			var iBlock = d.createElement('i');
-	 			iBlock.setAttribute('class', 'fa fa-star');
-	 			liBlock.appendChild(iBlock);
-	 			this.cachedBlock = liBlock;
-	 		}
-	 		return this.cachedBlock;
+			var liBlock = d.createElement('li');
+			var iBlock = d.createElement('i');
+			iBlock.setAttribute('class', 'fa fa-star');
+			liBlock.appendChild(iBlock);
+			this.cachedBlock = liBlock;
+			return this.cachedBlock;
 	 	},
 	 	reset: function(data) {
 	 		this.update(data);
@@ -207,7 +207,7 @@
 
 		get: function(property) {
 			if(property == 'time') {
-				return (Game.isGameinProcess() ?Math.round(window.performance.now()/ 1000) : this.data.timeEnd) - this.data.timeStart
+				return (this.data.timeEnd == 0 ? Math.round(window.performance.now()/ 1000) : this.data.timeEnd ) - this.data.timeStart
 			}
 			return this.data[property] || 0;
 		}
@@ -302,7 +302,7 @@
 		this.open = false;
 
 		this.init();
-	}		
+	}
 
 	Card.prototype = {
 
@@ -328,7 +328,7 @@
 			this.html.classList.add('show', 'open');
 			this.open = true;
 		},
-		
+
 		isMatched: function() {
 			return this.matched;
 		},
@@ -359,10 +359,10 @@
 
 
 	Game.Turn = {
-		
+
 		previousCard: false,
 		currentCard: false,
-		
+
 		execute: function(card) {
 
 			//if card already on testing
