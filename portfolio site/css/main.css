@@ -1,0 +1,160 @@
+* {
+	box-sizing: border-box;
+}
+
+body, html {
+	margin:0;
+	padding:0;
+}
+
+html {
+	font-size: 15px;
+}
+
+body {
+	color: #2d3c49;
+	line-height: 1.45;
+	font-family: 'Roboto', Helvetica, sans-serif;
+}
+
+section {
+	margin-bottom: 30px;
+}
+
+.section-title {
+	font-size: 2rem;
+}
+
+.container {
+	margin: 0 auto;
+	padding: 0px 15px;
+}
+
+
+.flex-row {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: stretch;
+	margin: auto -0.5rem;
+}
+
+.flex-row .col {
+	-ms-flex-preferred-size: 0;
+	flex-basis: 0;
+	-ms-flex-positive: 1;
+	flex-grow: 1;
+	max-width: 100%;
+	padding: 0.5rem;
+}
+
+.img-responsive {
+	max-width: 100%;
+}
+
+.text-primary {
+	color: #7d97ad;
+}
+
+/* header */
+
+.about {
+	border-bottom: 4px solid #7d97ad;
+}
+
+.about .logo {
+	margin: auto;
+}
+.author {
+	text-transform: uppercase;
+	font-weight: 300;
+	text-align: right;
+}
+
+.author-name {
+	font-size: 3rem;
+}
+
+.author-title {
+	font-size: 1.5rem;
+}
+
+/* portfolio */
+
+
+.portfolio {
+
+}
+
+.portfolio-item {
+
+}
+
+.portfolio-item-image {
+	text-align: center;
+}
+
+.portfolio-item-title {
+	text-align: center;
+}
+
+.portfolio-item-title h3 {
+	text-transform: uppercase;
+	font-size: 1.2rem;
+	padding: 10px 15px;
+}
+
+.portfolio-item-link {
+	
+}
+
+@media only screen 
+and (min-width: 320px) 
+and (max-width: 767px) {
+
+	html {
+		font-size: 12px;
+	}
+
+	.container {
+		width: 100%; 
+	}
+
+	.flex-row {
+		flex-direction: column;
+		justify-content: space-between;
+	}
+
+	.flex-row .col {
+		align-content: stretch;
+	}
+
+	.author {
+		text-align: center;
+	}
+
+	.portfolio-item {
+		margin-bottom: 20px;
+	}
+
+	.section-title {
+		text-align: center;
+	}
+
+}
+
+/* iPad in portrait & landscape */
+@media only screen 
+and (min-width : 768px) 
+and (max-width : 1023px)  {
+	.container {
+		width: 100%; 
+	}
+}
+
+@media only screen 
+and (min-width: 1024px) {
+	.container {
+		width: 1024px; 
+	}
+}
