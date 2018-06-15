@@ -102,7 +102,9 @@
 	 	},
 
 	 	win: function() {
-	 		Game.Gui.Popup({
+	 		this.isStarted = false;
+	 		Game.Statistics.stop();
+	 		Game.Gui.popup({	
 	 			moves: Game.Statistics.get('moves'),
 	 			stars: Game.Statistics.get('stars'),
 	 		})
@@ -150,10 +152,12 @@
 	 		this.movesContainer = this.container.querySelector('.moves');
 	 		this.starsContainer = this.container.querySelector('.stars');
 	 		this.restartContainer = this.container.querySelector('.restart');
-
-	 		this.restartContainer.addEventListener('click', Game.restart, false);
 	 		this.Popup.init();
 	 		this.update(data);
+
+	 		d.querySelectorAll('.restart').forEach(function(link){
+	 			link.addEventListener('click', Game.restart, false);
+	 		});
 	 	},
 
 	 	update: function(data) {
@@ -167,11 +171,12 @@
 	 	},
 
 	 	popup: function(data) {
-	 		Game.Gui.Popup.compose(data).show();
+	 		Game.Gui.Popup.update(data).show();
 	 	},
 
 	 	
 	 	reset: function(data) {
+	 		Game.Gui.Popup.hide();
 	 		this.update(data);
 	 	}
 	 };
@@ -245,6 +250,7 @@
 	 		var t = data.time;
 	 		var message = 'you`v done with ' + m + ' moves in ' + t + ' seconds!';
 	 		
+	 		this.movesContainer.innerText = '';
 	 		this.movesContainer.appendChild(
 	 			Game.Gui.Moves.render(data.moves)
 	 		);
@@ -321,6 +327,10 @@
 	 		this.startTimer();
 	 	},
 
+	 	stop: function() {
+	 		this.stopTimer();
+	 	},
+
 	 	startTimer: function() {
 	 		this.data.timeStart = Math.round(window.performance.now()/ 1000);
 	 	},
@@ -331,6 +341,7 @@
 
 	 	get: function(property) {
 	 		if(property == 'time') {
+	 			if (this.data.timeStart == 0) return 0;
 	 			return (this.data.timeEnd == 0 ? Math.round(window.performance.now()/ 1000) : this.data.timeEnd ) - this.data.timeStart
 	 		}
 	 		return this.data[property] || 0;

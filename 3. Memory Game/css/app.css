@@ -40,10 +40,10 @@ h1 {
 .deck {
     width: 660px;
     min-height: 680px;
-    /*background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);*/
+    background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
     padding: 32px;
     border-radius: 10px;
-    /*box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);*/
+    box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -54,7 +54,7 @@ h1 {
 .deck .card {
     height: 125px;
     width: 125px;
-    /*background: #2e3d49;*/
+    background: #2e3d49;
     font-size: 0;
     color: #ffffff;
     border-radius: 8px;
@@ -62,7 +62,7 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    /*box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);*/
+    box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
 }
 
 .deck .card.open {
@@ -113,7 +113,7 @@ h1 {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translateX(-50%) translateY(-40%);
+    transform: translateX(-50%) translateY(-50%);
     z-index: 100;
     width: 90%;
     padding: 40px 20px;
@@ -182,12 +182,18 @@ h1 {
     opacity: 1;
 }
 
+@media screen and
+(min-width: 640px) {
+    .score-popup {
+        width: 500px;
+    }
+}
 
 
 @keyframes scale-in {
     0% {
         opacity: 0;
-        transform: scale(0.5) translateX(-50%) translateY(-40%);
+        transform: scale(0.5) translateX(-50%) translateY(-50%);
     }
 
     100% {
@@ -204,6 +210,6 @@ h1 {
 
     100% {
         opacity: 0;
-        transform: scale(0.5) translateX(-50%) translateY(-40%);
+        transform: scale(0.5) translateX(-50%) translateY(-50%);
     }
 }
