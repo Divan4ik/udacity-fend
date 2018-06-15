@@ -17,10 +17,30 @@
 	 *   - loop through each card and create its HTML
 	 *   - add each card's HTML to the page
 	 */
-	 function randomId() {
-	 	var chars = '0987654321qazwsxedcrfvtgbyhnujmiklop';
-	 	return shuffle(chars.split('')).slice(0,7).join('');
-	 }
+
+	//https://jonsuh.com/blog/detect-the-end-of-css-animations-and-transitions-with-javascript/
+	function whichAnimationEvent(){
+		var t,
+		el = document.createElement("fakeelement");
+
+		var transitions = {
+			"animation"      : "animationend",
+			"OAnimation"     : "oAnimationEnd",
+			"MozAnimation"   : "Animationend",
+			"WebkitAnimation": "webkitAnimationEnd"
+		}
+
+		for (t in transitions){
+			if (el.style[t] !== undefined){
+				return transitions[t];
+			}
+		}
+	}
+
+	function randomId() {
+		var chars = '0987654321qazwsxedcrfvtgbyhnujmiklop';
+		return shuffle(chars.split('')).slice(0,7).join('');
+	}
 
 	// Shuffle function from http://stackoverflow.com/a/2450976
 	function shuffle(array) {
@@ -50,30 +70,30 @@
 	 */
 
 
-	var Game = {
+	 var Game = {
 
-		started: false,
+	 	started: false,
 
-		options: {
-			speed: 500
-		},
+	 	options: {
+	 		speed: 500
+	 	},
 
 	 	init: function() {
 	 		Game.Board.init();
 	 		Game.Statistics.init();
 	 		Game.Gui.init({
-				moves: Game.Statistics.get('moves'),
-				stars: Game.Statistics.get('stars'),
-			});
+	 			moves: Game.Statistics.get('moves'),
+	 			stars: Game.Statistics.get('stars'),
+	 		});
 	 	},
 
 	 	restart: function() {
 	 		Game.Board.reset();
 	 		Game.Statistics.reset();
 	 		Game.Gui.reset({
-				moves: Game.Statistics.get('moves'),
-				stars: Game.Statistics.get('stars'),
-			});
+	 			moves: Game.Statistics.get('moves'),
+	 			stars: Game.Statistics.get('stars'),
+	 		});
 	 	},
 
 	 	start: function() {
@@ -82,10 +102,10 @@
 	 	},
 
 	 	win: function() {
-			var m = Game.Statistics.get('moves');
-			var t = Game.Statistics.get('time');
-			var message = 'you`v done with ' + m + ' moves in ' + t + ' seconds!';
-			alert(message);
+	 		Game.Gui.Popup({
+	 			moves: Game.Statistics.get('moves'),
+	 			stars: Game.Statistics.get('stars'),
+	 		})
 	 	},
 
 	 	turn: function(data) {
@@ -103,20 +123,20 @@
 	 	message: function(source, data) {
 	 		switch(source) {
 	 			case 'turn' :
-	 				Game.Statistics.update();
+	 			Game.Statistics.update();
 
-	 				this.Gui.update({
-						moves: Game.Statistics.get('moves'),
-						stars: Game.Statistics.get('stars'),
-					});
+	 			this.Gui.update({
+	 				moves: Game.Statistics.get('moves'),
+	 				stars: Game.Statistics.get('stars'),
+	 			});
 
-	 				break;
+	 			break;
 
- 				case 'board':
- 					if (!Game.isStarted())
- 						Game.start();
+	 			case 'board':
+	 			if (!Game.isStarted())
+	 				Game.start();
 
- 					break;
+	 			break;
 
 	 		}
 	 	}
@@ -132,13 +152,13 @@
 	 		this.restartContainer = this.container.querySelector('.restart');
 
 	 		this.restartContainer.addEventListener('click', Game.restart, false);
-
+	 		this.Popup.init();
 	 		this.update(data);
 	 	},
 
 	 	update: function(data) {
 	 		this.movesContainer.innerText = data.moves;
-			this.starsContainer.innerText = '';
+	 		this.starsContainer.innerText = '';
 	 		var dFrag = d.createDocumentFragment();
 	 		while(data.stars > 0) {
 	 			dFrag.appendChild( this.getStarsTemplate() );
@@ -149,20 +169,71 @@
 
 	 	},
 
-	 	popup: function() {
-	 		console.log('popup!!!');
+	 	popup: function(data) {
+	 		Game.Gui.Popup.compose(data).show();
 	 	},
 
 	 	getStarsTemplate: function() {
-			var liBlock = d.createElement('li');
-			var iBlock = d.createElement('i');
-			iBlock.setAttribute('class', 'fa fa-star');
-			liBlock.appendChild(iBlock);
-			this.cachedBlock = liBlock;
-			return this.cachedBlock;
+	 		var liBlock = d.createElement('li');
+	 		var iBlock = d.createElement('i');
+	 		iBlock.setAttribute('class', 'fa fa-star');
+	 		liBlock.appendChild(iBlock);
+	 		this.cachedBlock = liBlock;
+	 		return this.cachedBlock;
 	 	},
 	 	reset: function(data) {
 	 		this.update(data);
+	 	}
+	 };
+
+	 Game.Gui.Popup = {
+
+	 	opened: false,
+
+	 	init: function() {
+	 		this.transitionEvent = whichAnimationEvent();
+	 		this.container = d.querySelector('.score-popup');
+	 		this.message = d.querySelector('.score-message');
+	 		this.controls = d.querySelector('.score-controls');
+	 	},
+
+	 	compose: function(data) {
+	 		
+	 		var m = Game.Statistics.get('moves');
+	 		var t = Game.Statistics.get('time');
+	 		var message = 'you`v done with ' + m + ' moves in ' + t + ' seconds!';
+
+	 		return this;
+	 	},
+
+	 	show: function(data) {
+	 		if(this.opened) return;
+	 		var self = this;
+	 		
+	 		this.container.addEventListener(this.transitionEvent, function handler(event) {
+	 			self.container.classList.add('open');
+	 			self.container.classList.remove('in');
+	 			self.container.removeEventListener(self.transitionEvent, handler);
+	 		}, false);
+
+	 		this.container.classList.add('in');
+	 		this.opened = true;
+	 	},
+
+	 	hide: function() {
+
+	 		if(!this.opened) return;
+
+	 		var self = this;
+
+	 		this.container.addEventListener(this.transitionEvent, function handler(event) {
+	 			self.container.classList.remove('out');
+	 			self.container.removeEventListener(self.transitionEvent, handler);
+	 		}, false);
+
+	 		this.container.classList.add('out');
+	 		self.container.classList.remove('open');
+	 		this.opened = false;
 	 	}
 	 };
 
@@ -183,47 +254,47 @@
 	 	},
 
 	 	reset: function() {
-			this.data.stars = 3;
+	 		this.data.stars = 3;
 	 		this.data.moves = 0;
 	 		this.data.timeStart = 0;
 	 		this.data.timeEnd = 0;
-		},
+	 	},
 
-		addMoveCount: function() {
-			this.data.moves++;
-		},
+	 	addMoveCount: function() {
+	 		this.data.moves++;
+	 	},
 
-		start: function() {
-			this.startTimer();
-		},
+	 	start: function() {
+	 		this.startTimer();
+	 	},
 
-		startTimer: function() {
-			this.data.timeStart = Math.round(window.performance.now()/ 1000);
-		},
+	 	startTimer: function() {
+	 		this.data.timeStart = Math.round(window.performance.now()/ 1000);
+	 	},
 
-		stopTimer: function() {
-			this.data.timeEnd = Math.round(window.performance.now()/ 1000);
-		},
+	 	stopTimer: function() {
+	 		this.data.timeEnd = Math.round(window.performance.now()/ 1000);
+	 	},
 
-		get: function(property) {
-			if(property == 'time') {
-				return (this.data.timeEnd == 0 ? Math.round(window.performance.now()/ 1000) : this.data.timeEnd ) - this.data.timeStart
-			}
-			return this.data[property] || 0;
-		}
-	};
+	 	get: function(property) {
+	 		if(property == 'time') {
+	 			return (this.data.timeEnd == 0 ? Math.round(window.performance.now()/ 1000) : this.data.timeEnd ) - this.data.timeStart
+	 		}
+	 		return this.data[property] || 0;
+	 	}
+	 };
 
-	Game.Board = {
+	 Game.Board = {
 
-		collection: {},
+	 	collection: {},
 
-		init: function() {
+	 	init: function() {
 
-			this.container = d.querySelector('.deck');
+	 		this.container = d.querySelector('.deck');
 
-			this.onClick = this.onClick.bind(this);
+	 		this.onClick = this.onClick.bind(this);
 
-			this.shuffleDOM();
+	 		this.shuffleDOM();
 
 			// Game.onMenu(this.reset);
 

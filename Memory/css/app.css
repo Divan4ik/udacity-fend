@@ -107,3 +107,67 @@ h1 {
     float: right;
     cursor: pointer;
 }
+
+
+.score-popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-40%);
+    transform: translate3d(0,0,0);
+    z-index: 100;
+    width: 160px;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid rgba(27,31,35,0.15);
+    border-radius: 4px;
+    box-shadow: 0 3px 12px rgba(27,31,35,0.15);
+    visibility: hidden;
+}
+
+.score-popup.in,
+.score-popup.out {
+    animation-duration: 0.5s;
+    animation-timing-function: cubic-bezier(0.2, 0, 0.13, 1.5);
+}
+
+.score-popup.in {
+    visibility: visible;
+    animation-name: scale-in;
+}
+
+.score-popup.out {
+    visibility: visible;
+    animation-name: scale-out;
+}
+
+.score-popup.open {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+
+@keyframes scale-in {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes scale-out {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+}
