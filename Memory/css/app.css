@@ -40,10 +40,10 @@ h1 {
 .deck {
     width: 660px;
     min-height: 680px;
-    background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
+    /*background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);*/
     padding: 32px;
     border-radius: 10px;
-    box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
+    /*box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);*/
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -54,7 +54,7 @@ h1 {
 .deck .card {
     height: 125px;
     width: 125px;
-    background: #2e3d49;
+    /*background: #2e3d49;*/
     font-size: 0;
     color: #ffffff;
     border-radius: 8px;
@@ -62,7 +62,7 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
+    /*box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);*/
 }
 
 .deck .card.open {
@@ -114,15 +114,51 @@ h1 {
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-40%);
-    transform: translate3d(0,0,0);
     z-index: 100;
-    width: 160px;
-    padding: 20px;
+    width: 90%;
+    padding: 40px 20px;
     background-color: #fff;
     border: 1px solid rgba(27,31,35,0.15);
     border-radius: 4px;
     box-shadow: 0 3px 12px rgba(27,31,35,0.15);
     visibility: hidden;
+}
+
+.score-popup .stars-container {
+    text-align: center;
+    margin-bottom: 2em;
+}
+
+.score-popup .stars-container .stars {
+    margin: 0;
+    padding: 0;
+    font-size: 2em;
+    letter-spacing: 0.34em;
+}
+
+
+.score-popup .stars-container .stars li {
+    list-style: none;
+    display: inline-block;
+}
+
+.score-popup .moves-container {
+    font-size: 2em;
+    text-align: center;
+}
+
+.score-popup .time-container {
+    font-size: 2em;
+}
+
+.score-popup .controls {
+    margin-top: 3em;
+    text-align: center;
+    font-size: 2em;
+}
+
+.score-popup .controls .restart {
+    cursor: pointer;
 }
 
 .score-popup.in,
@@ -151,23 +187,23 @@ h1 {
 @keyframes scale-in {
     0% {
         opacity: 0;
-        transform: scale(0.5);
+        transform: scale(0.5) translateX(-50%) translateY(-40%);
     }
 
     100% {
         opacity: 1;
-        transform: scale(1);
+        transform: scale(1) translateX(-50%) translateY(-50%);
     }
 }
 
 @keyframes scale-out {
     0% {
         opacity: 1;
-        transform: scale(1);
+        transform: scale(1) translateX(-50%) translateY(-50%);
     }
 
     100% {
         opacity: 0;
-        transform: scale(0.5);
+        transform: scale(0.5) translateX(-50%) translateY(-40%);
     }
 }

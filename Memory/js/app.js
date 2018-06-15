@@ -159,18 +159,35 @@
 	 	update: function(data) {
 	 		this.movesContainer.innerText = data.moves;
 	 		this.starsContainer.innerText = '';
-	 		var dFrag = d.createDocumentFragment();
-	 		while(data.stars > 0) {
-	 			dFrag.appendChild( this.getStarsTemplate() );
-	 			data.stars--;
-	 		}
+	 		this.starsContainer.appendChild(
+	 			Game.Gui.Stars.render(data.stars)
+	 		);
 
-	 		this.starsContainer.appendChild(dFrag);
-
+	 		Game.Gui.Popup.update(data);
 	 	},
 
 	 	popup: function(data) {
 	 		Game.Gui.Popup.compose(data).show();
+	 	},
+
+	 	
+	 	reset: function(data) {
+	 		this.update(data);
+	 	}
+	 };
+
+	 Game.Gui.Stars = {
+	 	render(data) {
+	 		var container = d.createElement('ul');
+	 		container.setAttribute('class', 'stars');
+	 		var dFrag = d.createDocumentFragment();
+	 		while(data > 0) {
+	 			dFrag.appendChild( this.getStarsTemplate() );
+	 			data--;
+	 		}
+	 		container.appendChild(dFrag);
+
+	 		return container;
 	 	},
 
 	 	getStarsTemplate: function() {
@@ -180,10 +197,28 @@
 	 		liBlock.appendChild(iBlock);
 	 		this.cachedBlock = liBlock;
 	 		return this.cachedBlock;
-	 	},
-	 	reset: function(data) {
-	 		this.update(data);
 	 	}
+	 };
+
+	 Game.Gui.Moves = {
+	 	render(data) {
+	 		var container = d.createElement('span');
+	 		container.setAttribute('class', 'moves');
+	 		container.innerText = data + ' Moves';
+	 		return container;
+	 	},
+	 };
+
+	 Game.Gui.Controls = {
+	 	render(data) {
+	 		var container = d.createElement('div');
+	 		container.setAttribute('class', 'restart');
+	 		var iBlock = d.createElement('i');
+	 		iBlock.setAttribute('class', 'fa fa-repeat');
+	 		container.appendChild(iBlock);
+
+	 		return container;
+	 	},
 	 };
 
 	 Game.Gui.Popup = {
@@ -193,16 +228,34 @@
 	 	init: function() {
 	 		this.transitionEvent = whichAnimationEvent();
 	 		this.container = d.querySelector('.score-popup');
+	 		this.movesContainer = this.container.querySelector('.moves-container');
+	 		this.starsContainer = this.container.querySelector('.stars-container');
+	 		this.controlsContainer = this.container.querySelector('.controls');
+
+	 		this.controlsContainer.appendChild(
+	 			Game.Gui.Controls.render()
+	 		);
+
 	 		this.message = d.querySelector('.score-message');
 	 		this.controls = d.querySelector('.score-controls');
 	 	},
 
-	 	compose: function(data) {
-	 		
-	 		var m = Game.Statistics.get('moves');
-	 		var t = Game.Statistics.get('time');
+	 	update: function(data) {
+	 		var m = data.moves;
+	 		var t = data.time;
 	 		var message = 'you`v done with ' + m + ' moves in ' + t + ' seconds!';
-
+	 		
+	 		this.movesContainer.appendChild(
+	 			Game.Gui.Moves.render(data.moves)
+	 		);
+	 		/**
+	 		* @TODO Game.Gui.Stars must clear block by himself
+	 		*/
+	 		this.starsContainer.innerText = '';
+	 		this.starsContainer.appendChild(
+	 			Game.Gui.Stars.render(data.stars)
+	 		);
+	 		
 	 		return this;
 	 	},
 
