@@ -2,7 +2,8 @@
 	box-sizing: border-box;
 }
 
-body, html {
+body,
+html {
 	margin:0;
 	padding:0;
 }
@@ -13,12 +14,21 @@ html {
 
 body {
 	color: #2d3c49;
-	line-height: 1.45;
+	line-height: 1.54;
 	font-family: 'Roboto', Helvetica, sans-serif;
 }
 
 section {
 	margin-bottom: 30px;
+}
+
+.content p {
+	font-size: 16px;
+	padding-bottom: 10px;
+}
+
+.content p.lead {
+	font-size: 1.6em;
 }
 
 .section-title {
