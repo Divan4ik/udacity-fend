@@ -116,6 +116,7 @@ h1 {
     transform: translateX(-50%) translateY(-50%);
     z-index: 100;
     width: 90%;
+    text-align: center;
     padding: 40px 20px;
     background-color: #fff;
     border: 1px solid rgba(27,31,35,0.15);
@@ -140,20 +141,20 @@ h1 {
 .score-popup .stars-container .stars li {
     list-style: none;
     display: inline-block;
+    width: 40px;
 }
 
 .score-popup .moves-container {
     font-size: 2em;
-    text-align: center;
 }
 
 .score-popup .time-container {
-    font-size: 2em;
+    margin-top: 3em;
+    font-size: 1.5em;
 }
 
 .score-popup .controls {
     margin-top: 3em;
-    text-align: center;
     font-size: 2em;
 }
 

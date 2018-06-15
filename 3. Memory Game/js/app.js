@@ -84,6 +84,7 @@
 	 		Game.Gui.init({
 	 			moves: Game.Statistics.get('moves'),
 	 			stars: Game.Statistics.get('stars'),
+	 			time: Game.Statistics.get('time'),
 	 		});
 	 	},
 
@@ -93,6 +94,7 @@
 	 		Game.Gui.reset({
 	 			moves: Game.Statistics.get('moves'),
 	 			stars: Game.Statistics.get('stars'),
+	 			time: Game.Statistics.get('time'),
 	 		});
 	 	},
 
@@ -102,11 +104,12 @@
 	 	},
 
 	 	win: function() {
-	 		this.isStarted = false;
+	 		Game.started = false;
 	 		Game.Statistics.stop();
 	 		Game.Gui.popup({	
 	 			moves: Game.Statistics.get('moves'),
 	 			stars: Game.Statistics.get('stars'),
+	 			time: Game.Statistics.get('time'),
 	 		})
 	 	},
 
@@ -119,7 +122,7 @@
 	 	},
 
 	 	isStarted: function() {
-	 		return this.started
+	 		return this.started;
 	 	},
 
 	 	message: function(source, data) {
@@ -130,6 +133,7 @@
 	 			this.Gui.update({
 	 				moves: Game.Statistics.get('moves'),
 	 				stars: Game.Statistics.get('stars'),
+	 				time: Game.Statistics.get('time'),
 	 			});
 
 	 			break;
@@ -182,7 +186,7 @@
 	 };
 
 	 Game.Gui.Stars = {
-	 	render(data) {
+	 	render: function(data) {
 	 		var container = d.createElement('ul');
 	 		container.setAttribute('class', 'stars');
 	 		var dFrag = d.createDocumentFragment();
@@ -206,16 +210,20 @@
 	 };
 
 	 Game.Gui.Moves = {
-	 	render(data) {
+	 	render: function(data) {
 	 		var container = d.createElement('span');
 	 		container.setAttribute('class', 'moves');
-	 		container.innerText = data + ' Moves';
+	 		container.innerText = data + ' ' + this.plural(data);
 	 		return container;
 	 	},
+	 	plural: function(data) {
+	 		var num = data >= 1 ? data % 10 : data;
+	 		return num === 1 ? 'move' : 'moves';
+	 	}
 	 };
 
 	 Game.Gui.Controls = {
-	 	render(data) {
+	 	render: function(data) {
 	 		var container = d.createElement('div');
 	 		container.setAttribute('class', 'restart');
 	 		var iBlock = d.createElement('i');
@@ -223,7 +231,16 @@
 	 		container.appendChild(iBlock);
 
 	 		return container;
-	 	},
+	 	}
+	 };
+
+	 Game.Gui.Time = {
+	 	render: function(data) {
+	 		var container = d.createElement('span');
+	 		container.setAttribute('class', 'moves');
+	 		container.innerText = data + ' seconds';
+	 		return container;
+	 	}
 	 };
 
 	 Game.Gui.Popup = {
@@ -235,6 +252,7 @@
 	 		this.container = d.querySelector('.score-popup');
 	 		this.movesContainer = this.container.querySelector('.moves-container');
 	 		this.starsContainer = this.container.querySelector('.stars-container');
+	 		this.timeContainer = this.container.querySelector('.time-container');
 	 		this.controlsContainer = this.container.querySelector('.controls');
 
 	 		this.controlsContainer.appendChild(
@@ -250,10 +268,6 @@
 	 		var t = data.time;
 	 		var message = 'you`v done with ' + m + ' moves in ' + t + ' seconds!';
 	 		
-	 		this.movesContainer.innerText = '';
-	 		this.movesContainer.appendChild(
-	 			Game.Gui.Moves.render(data.moves)
-	 		);
 	 		/**
 	 		* @TODO Game.Gui.Stars must clear block by himself
 	 		*/
@@ -261,6 +275,17 @@
 	 		this.starsContainer.appendChild(
 	 			Game.Gui.Stars.render(data.stars)
 	 		);
+
+	 		this.movesContainer.innerText = '';
+	 		this.movesContainer.appendChild(
+	 			Game.Gui.Moves.render(data.moves)
+	 		);
+
+	 		this.timeContainer.innerText = '';
+	 		this.timeContainer.appendChild(
+	 			Game.Gui.Time.render(data.time)
+	 		);
+	 		
 	 		
 	 		return this;
 	 	},
@@ -310,6 +335,7 @@
 
 	 	update: function() {
 	 		this.addMoveCount();
+	 		this.checkSkill();
 	 	},
 
 	 	reset: function() {
@@ -317,6 +343,25 @@
 	 		this.data.moves = 0;
 	 		this.data.timeStart = 0;
 	 		this.data.timeEnd = 0;
+	 	},
+
+	 	checkSkill: function() {
+
+	 		var stars = 1;
+
+	 		if (this.data.moves <= 20) {
+	 			stars = 3
+	 		}
+
+	 		if (this.data.moves > 21 && this.data.moves < 30 ) {
+	 			stars = 2
+	 		}
+
+	 		if (this.data.moves > 35) {
+	 			stars = 1
+	 		}
+
+	 		this.data.stars = stars;
 	 	},
 
 	 	addMoveCount: function() {
