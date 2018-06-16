@@ -330,7 +330,6 @@
 	 	},
 
 	 	reset: function() {
-	 		console.log('stats reset');
 	 		this.data.stars = 3;
 	 		this.data.moves = 0;
 	 		this.data.timeStart = 0;
