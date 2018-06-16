@@ -81,24 +81,18 @@
 	 	init: function() {
 	 		Game.Board.init();
 	 		Game.Statistics.init();
-	 		Game.Gui.init({
-	 			moves: Game.Statistics.get('moves'),
-	 			stars: Game.Statistics.get('stars'),
-	 			time: Game.Statistics.get('time'),
-	 		});
+	 		Game.Gui.init(Game.Statistics.getAll());
 	 	},
 
-	 	restart: function() {
+	 	stop: function() {
+	 		Game.started = false;
 	 		Game.Board.reset();
 	 		Game.Statistics.reset();
-	 		Game.Gui.reset({
-	 			moves: Game.Statistics.get('moves'),
-	 			stars: Game.Statistics.get('stars'),
-	 			time: Game.Statistics.get('time'),
-	 		});
+	 		Game.Gui.reset(Game.Statistics.getAll());
 	 	},
 
 	 	start: function() {
+	 		if(this.started) return;
 	 		this.started = true;
 	 		Game.Statistics.start();
 	 	},
@@ -106,11 +100,7 @@
 	 	win: function() {
 	 		Game.started = false;
 	 		Game.Statistics.stop();
-	 		Game.Gui.popup({	
-	 			moves: Game.Statistics.get('moves'),
-	 			stars: Game.Statistics.get('stars'),
-	 			time: Game.Statistics.get('time'),
-	 		})
+	 		Game.Gui.popup(Game.Statistics.getAll())
 	 	},
 
 	 	turn: function(data) {
@@ -128,22 +118,15 @@
 	 	message: function(source, data) {
 	 		switch(source) {
 	 			case 'turn' :
-	 			Game.Statistics.update();
-
-	 			this.Gui.update({
-	 				moves: Game.Statistics.get('moves'),
-	 				stars: Game.Statistics.get('stars'),
-	 				time: Game.Statistics.get('time'),
-	 			});
-
-	 			break;
+		 			Game.Statistics.update();
+		 			this.Gui.update(Game.Statistics.getAll());
+		 			break;
 
 	 			case 'board':
-	 			if (!Game.isStarted())
-	 				Game.start();
-
-	 			break;
-
+		 			if (!Game.isStarted()) {
+		 				Game.start();
+		 			}
+		 			break;
 	 		}
 	 	}
 
@@ -160,7 +143,7 @@
 	 		this.update(data);
 
 	 		d.querySelectorAll('.restart').forEach(function(link){
-	 			link.addEventListener('click', Game.restart, false);
+	 			link.addEventListener('click', Game.stop, false);
 	 		});
 	 	},
 
@@ -329,6 +312,14 @@
 	 		stars: 3
 	 	},
 
+	 	getAll: function() {
+	 		return {
+	 			time: this.get('time'),
+	 			moves: this.get('moves'),
+	 			stars: this.get('stars'),
+	 		}
+	 	},
+
 	 	init: function() {
 
 	 	},
@@ -339,6 +330,7 @@
 	 	},
 
 	 	reset: function() {
+	 		console.log('stats reset');
 	 		this.data.stars = 3;
 	 		this.data.moves = 0;
 	 		this.data.timeStart = 0;
@@ -377,6 +369,7 @@
 	 	},
 
 	 	startTimer: function() {
+	 		console.log('time now counting');
 	 		this.data.timeStart = Math.round(window.performance.now()/ 1000);
 	 	},
 
