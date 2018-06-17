@@ -9,15 +9,26 @@ var BoundedObject = function() {
 }
 
 var env = {};
-env.DEBUG = false;
+env.DEBUG = 0;
 
-// BoundedObject.prototype.getBounds = function() {
-//     return [
-//         {
-//             topLeft: [this.x1, this.y],
-//             bottomRight: []
-// }
+var Log = function(data, level) {
+    if(!env.DEBUG) return;
 
+    switch(level) {
+        case 'warn' :
+            console.warn(data);
+            break;
+        case 'error':
+            console.error(data);
+            break;
+        default:
+            console.info(data);
+    }
+}
+
+/**
+ * sets gap between real image and white space
+ */
 BoundedObject.prototype.setBounds = function(top, right, bottom, left) {
     this.bounds.top = top;
     this.bounds.right = right;
@@ -25,6 +36,9 @@ BoundedObject.prototype.setBounds = function(top, right, bottom, left) {
     this.bounds.left = left;
 }
 
+/**
+ * returns close to real coords for objects
+ */
 BoundedObject.prototype.getCartesian = function() {
     var rect = {};
     rect.Y1 = this.y + this.bounds.top;
@@ -38,9 +52,19 @@ BoundedObject.prototype.isCollisionWith = function (obj) {
     var A = this.getCartesian(),
         B = obj.getCartesian();
 
-    return (A.X1 < B.X2 && A.X2 > B.X1 && A.Y1 < B.Y2 && A.Y2 > B.Y1);
+    // big thanks for this answer to Charles Bretana
+    // https://stackoverflow.com/questions/306316/determine-if-two-rectangles-overlap-each-other
+    if(A.X1 < B.X2 && A.X2 > B.X1 && A.Y1 < B.Y2 && A.Y2 > B.Y1) {
+        Log('Collision between '+ this.id +' and ' + obj.id, 'warn');
+        return true;
+    }
+    return false;
 }
 
+/**
+ * this function draws rectangle around object
+ * which is use for calculating collisions
+ */
 BoundedObject.prototype.drawBounds = function() {
     var bound = this.getCartesian();
     bound.width = this.width - this.bounds.left - this.bounds.right;
@@ -73,8 +97,9 @@ var Player = function() {
     this.height = 171;
     this.width = 101;
     this.gap = 18;
-    this.sprite = 'images/char-boy.png';
+    this.sprite = 'images/char-princess-girl.png';
     this.initiated = false;
+    this.id = 'player';
 }
 
 var _helpers = {
@@ -101,8 +126,43 @@ var _helpers = {
         return this.shuffle(char.split('')).slice(0,10).join('');
     },
 
-    isNoCollisions: function(a,b) {
-        return a.x + a.width + a.gap < b.x || b.x + b.width + b.gap < a.x;
+    getBorderRect: function(side) {
+        var borderRect = {},
+            size = 102 //must be bigger than meausered object
+
+        switch(side) {
+            case 'up':
+                borderRect.X1 = 0;
+                borderRect.Y1 = -size;
+                borderRect.X2 = ctx.canvas.width;
+                borderRect.Y2 = 0;
+                break;
+            case 'right':
+                borderRect.X1 = ctx.canvas.width;
+                borderRect.Y1 = 0;
+                borderRect.X2 = ctx.canvas.width + size;
+                borderRect.Y2 = ctx.canvas.height;
+                break;
+            case 'down':
+                borderRect.X1 = 0;
+                borderRect.Y1 = ctx.canvas.height;
+                borderRect.X2 = ctx.canvas.width;
+                borderRect.Y2 = ctx.canvas.height + size;
+                break;
+            case 'left':
+                borderRect.X1 = -size;
+                borderRect.Y1 = 0;
+                borderRect.X2 = 0;
+                borderRect.Y2 = ctx.canvas.height;
+                break;
+        }
+
+        return {
+            id: side + ' canvas border',
+            getCartesian: function() {
+                return borderRect;
+            }
+        };
     }
 }
 
@@ -150,6 +210,7 @@ Enemy.prototype.generageStartPosition = function() {
 
 Enemy.prototype.findSmartSpawnCoords = function() {
     while(!this.isSpawnVacanted()) {
+        Log(this.id + ' pushed back');
         this.x -= this.width;
     }
 }
@@ -160,7 +221,7 @@ Enemy.prototype.isSpawnVacanted = function() {
 
     allEnemies.forEach(function(enemy) {
         if(self.id === enemy.id || self.y !== enemy.y ||
-            _helpers.isNoCollisions(self, enemy)) {
+            !self.isCollisionWith(enemy)) {
             return;
         };
         result = false;
@@ -188,7 +249,6 @@ Enemy.prototype.isRouteFinished = function() {
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
-
 
 Player.prototype.update = function() {
     if(!this.initiated)  this.init();
@@ -219,23 +279,58 @@ Player.prototype.generageStartPosition = function() {
 
 Player.prototype.isRouteFinished = function() {
     return this.y <= 20;
-}
+};
+
+Player.prototype.move = function(change) {
+    this[change.coord] += change.value;
+};
+
+Player.prototype.isOffCanvas = function(canvasSide, change) {
+    var futurePosition = Object.create(player),
+        borderRect = _helpers.getBorderRect(canvasSide);
+    
+    Player.prototype.move.call(futurePosition, change);
+
+    if(BoundedObject.prototype.isCollisionWith.call(futurePosition, borderRect))
+        throw new Error('offcanvas!');
+};
 
 Player.prototype.handleInput = function(direction) {
+
+    if(direction === undefined) return;
+
+    var change = {
+        coord: undefined,
+        value: 0
+    };
+
     switch(direction) {
         case 'up':
-            this.y -= this.height / 2;
+            change.coord = 'y';
+            change.value = -(this.height / 2);
             break;
         case 'right':
-            this.x += this.width;
+            change.coord = 'x';
+            change.value = (this.width);
             break;
         case 'down':
-            this.y += this.height / 2;
+            change.coord = 'y';
+            change.value = (this.height / 2);
             break;
         case 'left':
-            this.x -= this.width;
+            change.coord = 'x';
+            change.value = -(this.width);
             break;
     }
+
+    try {
+        this.isOffCanvas(direction, change);
+        this.move(change);
+    } catch (e) {
+        Log(e, 'warn');
+        return;
+    }
+    
 }
 
 
