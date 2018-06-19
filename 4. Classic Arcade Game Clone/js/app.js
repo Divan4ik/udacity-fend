@@ -86,7 +86,6 @@ var Enemy = function() {
     this.height = 171;
     this.width = 101;
     this.maxSpeed = 6;
-    this.gap = 50;
     this.minSpeed = 3;
     this.initiated = false;
     this.id = _helpers.randomId();
@@ -96,7 +95,6 @@ var Player = function() {
     Player.superclass.constructor.call(this);
     this.height = 171;
     this.width = 101;
-    this.gap = 18;
     this.sprite = 'images/char-princess-girl.png';
     this.initiated = false;
     this.id = 'player';
