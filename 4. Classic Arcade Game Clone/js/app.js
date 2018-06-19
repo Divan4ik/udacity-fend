@@ -89,7 +89,7 @@ var Enemy = function() {
     this.gap = 50;
     this.minSpeed = 3;
     this.initiated = false;
-    this.id = _helpers.randomSeed();
+    this.id = _helpers.randomId();
 };
 
 var Player = function() {
@@ -121,7 +121,7 @@ var _helpers = {
         }
         return a;
     },
-    randomSeed: function() {
+    randomId: function() {
         var char = '0123456789qazwsxedcrfvtgbyhnujmikolp';
         return this.shuffle(char.split('')).slice(0,10).join('');
     },
