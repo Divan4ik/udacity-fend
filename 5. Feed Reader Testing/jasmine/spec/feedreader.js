@@ -90,11 +90,14 @@ $(function() {
               return /menu-hidden/.test($(document.body).attr('class'));
             },
 
-            /**
-             * Because visibility and display doesn't used in css
+            /*
+             * visibility and display wasn't used in css
+             * so we can't test menu easily
              * 
              * tested on left and top offCanvas translating
              * in some exotic cases this expression might not work
+             *
+             * @returns bool
              */
             isOffCanvas = function(el) {
               var clientRects = el.get(0).getClientRects()[0].toJSON();
@@ -212,17 +215,63 @@ $(function() {
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
          */
-         /*var initialFeeds  = $('.feed .entry'),
-             areFeedChanges = function(newFeeds) {
-                
-             }
+        var oldFeeds,
+            newFeeds,
+            originalTimeout,
+            
+            /**
+             * It may be not efficient desision to compare links
+             * but more detailed task are wasn't provided
+             * :shrugs his shoulders:
+             *
+             * @returns bool
+             */
+            areFeedUrlsNotSame = function(arr1, arr2) {
+                var result = true;
 
-         it('should be at least one entry', function(done) {
-            loadFeed(0, function() {
-              var feeds  = $('.feed .entry');
-              expect(feeds.length).not.toBeLessThan(1);
-              done();
+                for(var url1 of arr1) {
+                    for(var url2 of arr2) {
+                        if( url1 === url2 ) result = false;
+                    }
+                }
+
+                return result;
+            },
+
+            /*
+             * this functions helps to easily iterate
+             * @returns []
+             */
+            nodeListToFlatArray = function($arr) {
+                return Array.prototype.map.call($arr, function(el) {
+                    return $(el).closest('.entry-link').attr('href');
+                });
+            }
+
+        /**
+         * managing timeout from original docs
+         * @link https://jasmine.github.io/2.1/introduction#section-Asynchronous_Support
+         */
+        beforeAll(function() {
+          originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+          jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+        }); 
+
+        it('should be at least one entry', function(done) {
+
+            loadFeed(1, function() {
+                oldFeeds  = nodeListToFlatArray( $('.feed .entry') );
+
+                loadFeed(2, function() {
+                    newFeeds  = nodeListToFlatArray( $('.feed .entry') );
+                    expect(areFeedUrlsNotSame(oldFeeds, newFeeds)).toBe(true);
+                    done();
+                });
             });
-          });*/
+        });
+
+        afterAll(function() {
+          jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+        });
    });
 }());
