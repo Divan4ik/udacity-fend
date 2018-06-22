@@ -12,7 +12,7 @@ git clone git@github.com:Divan4ik/udacity-fend.git
 
 ## Testing
 
-All tests runned with in application in `index.html`. here is the list oof user features of freamwork:
+All tests run with in application in `index.html`. here is the list of used features of framework:
 
 * beforeAll
 * afterAll
