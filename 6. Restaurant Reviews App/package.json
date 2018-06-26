@@ -1,0 +1,11 @@
+{
+  "name": "fewd-restaraunt-reviews-app",
+  "version": "0.1.0",
+  "description": "fewd project",
+  "dependencies": {
+    "express": "^4.16.3"
+  },
+  "scripts": {
+    "serve": "node bin/index.js"
+  }
+}
