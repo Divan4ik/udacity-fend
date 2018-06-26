@@ -1,19 +1,17 @@
 /* feedreader.js
  *
- * This is the spec file that Jasmine will read and contains
- * all of the tests that will be run against your application.
+ * This is the spec file for Jasmine
  */
 
-/* We're placing all of our tests within the $() function,
- * since some of these tests may require DOM elements. We want
- * to ensure they don't run until the DOM is ready.
+/* 
+ * don't run until the DOM is ready.
  */
 $(function() {
 
-    /* This is our first test suite - a test suite just contains
-    * a related set of tests. This suite is all about the RSS
-    * feeds definitions, the allFeeds variable in our application.
-    */
+    /* 
+     * This suite is all about the RSS
+     * feeds definitions, the allFeeds variable in our application.
+     */
     describe('RSS Feeds', function() {
 
         /* This is our first test - it tests to make sure that the
@@ -28,8 +26,12 @@ $(function() {
             expect(allFeeds.length).not.toBe(0);
         });
 
-
-         describe('# urls', function() {
+        /* 
+         * testing  that the each feed
+         * has a defined property "url", that it is not
+         * empty and that it is a valid url
+         */
+        describe('# urls', function() {
 
             it('are defined', function() {
                 allFeeds.map(function(feed){
@@ -52,10 +54,14 @@ $(function() {
                     expect(feed.url).toMatch(urlRegex);
                 })
             });
-         });
+        });
 
-
-         describe('# names', function() {
+        /* 
+         * testing  that the each feed
+         * has a defined property "name" and that it is not
+         * empty.
+         */
+        describe('# names', function() {
 
             it('are defined', function() {
                 allFeeds.map(function(feed){
@@ -69,16 +75,33 @@ $(function() {
                     expect(feed.name).not.toBe('');
                 })
             });
-         });
+        });
     });
 
-
+    /* 
+     * This suite is all about the menu
+     * and dependency on user iteraction
+     */
     describe('The menu', function() {
 
+        /*
+         * local cache
+         */
         var menu,
             menuItems,
-            menuIcon;
+            menuIcon,
 
+            /*
+             * short alias function for DRY principle
+             * @returns bool
+             */
+            isMenuHidden = function() {
+                return $(document.body).hasClass('menu-hidden');
+            }
+
+        /*
+         * redefine in each test case
+         */
         beforeEach(function() {
           menu = $('.slide-menu');
           menuItems = menu.find('li');
@@ -87,38 +110,44 @@ $(function() {
 
 
         it('initially are not visible', function() {
-          expect($(document.body).hasClass('menu-hidden')).toBe(true);
+          expect(isMenuHidden()).toBe(true);
         });
 
 
         it('opens when burger clicked', function() {
-          expect($(document.body).hasClass('menu-hidden')).toBe(true);
+          expect(isMenuHidden()).toBe(true);
           menuIcon.trigger('click');
         });
 
-        /*
-         * There is an issue with testing this block separetely
-         * "Open" work just fine, but "close" can't pass
-         * without initially opened menu
-         * so i decide to duplicate the code
-         */
+        
         it('closes when burger clicked again', function() {
           
-          if(!$(document.body).hasClass('menu-hidden')) {
+            /*
+             * check if the menu is open close it
+             */
+            if(!isMenuHidden()) {
+                menuIcon.trigger('click');
+            }
+
             menuIcon.trigger('click');
-          }
-          
-          menuIcon.trigger('click');
-          expect($(document.body).hasClass('menu-hidden')).toBe(false);
-          menuIcon.trigger('click');
-          expect($(document.body).hasClass('menu-hidden')).toBe(true);
+            expect(isMenuHidden()).toBe(false);
+            menuIcon.trigger('click');
+            expect(isMenuHidden()).toBe(true);
         });
 
     });
 
+    /* 
+     * next two suites is for testing 
+     * feed loading,
+     */
+
+    /* 
+     * this suite testing inital loading
+     */
     describe('Initial Entries', function() {
 
-        it('should be at least one entry', function(done) {
+        it('Feeds must be rendered after successfully loading from server', function(done) {
           loadFeed(0, function() {
             var feeds  = $('.feed .entry');
             expect(feeds.length).not.toBeLessThan(1);
@@ -128,29 +157,17 @@ $(function() {
 
     });
 
+    /* 
+     * and this one checks that content is changed after new feed load
+     */
     describe('New Feed Selection', function() {
 
         var oldFeeds,
             newFeeds,
-            originalTimeout,
-            
-            /*
-             * It may be not efficient desision to compare links
-             * but more detailed task are wasn't provided
-             * :shrugs his shoulders:
-             *
-             * @returns bool
-             */
-            areFeedUrlsNotSame = function(arr1, arr2) {
-                for(var url1 of arr1) {
-                    for(var url2 of arr2) {
-                        expect( url1 === url2 ).toBe(false);
-                    }
-                }
-            },
+            originalTimeout
 
             /*
-             * this functions helps to easily iterate
+             * this functions makes an array of urls from nodes
              * @returns []
              */
             nodeListToFlatArray = function($arr) {
@@ -168,19 +185,22 @@ $(function() {
           jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
         }); 
 
-        it('should be at least one entry', function(done) {
+        it('Content must changes wher new feeds are loaded', function(done) {
 
             loadFeed(1, function() {
                 oldFeeds  = nodeListToFlatArray( $('.feed .entry') );
 
                 loadFeed(2, function() {
                     newFeeds  = nodeListToFlatArray( $('.feed .entry') );
-                    areFeedUrlsNotSame(oldFeeds, newFeeds);
+                    expect(oldFeeds).not.toEqual(newFeeds);
                     done();
                 });
             });
         });
 
+        /*
+         * set initial value back
+         */
         afterAll(function() {
           jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
         });
