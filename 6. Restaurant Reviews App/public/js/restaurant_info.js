@@ -87,7 +87,7 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   address.innerHTML = restaurant.address;
 
   const image = document.getElementById('restaurant-img');
-  image.className = 'restaurant-img'
+  image.className = 'restaurant-img';
   image.src = DBHelper.imageUrlForRestaurant(restaurant);
 
   const cuisine = document.getElementById('restaurant-cuisine');
@@ -126,21 +126,26 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
  */
 fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   const container = document.getElementById('reviews-container');
+
+  const baseContainer = document.createElement('div');
+  baseContainer.className = 'base-container';
+
   const title = document.createElement('h2');
   title.innerHTML = 'Reviews';
-  container.appendChild(title);
+  baseContainer.appendChild(title);
 
   if (!reviews) {
     const noReviews = document.createElement('p');
     noReviews.innerHTML = 'No reviews yet!';
-    container.appendChild(noReviews);
+    baseContainer.appendChild(noReviews);
     return;
   }
   const ul = document.getElementById('reviews-list');
   reviews.forEach(review => {
     ul.appendChild(createReviewHTML(review));
   });
-  container.appendChild(ul);
+  baseContainer.appendChild(ul);
+  container.appendChild(baseContainer);
 }
 
 /**
@@ -148,24 +153,60 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
  */
 createReviewHTML = (review) => {
   const li = document.createElement('li');
-  const name = document.createElement('p');
+  li.className = 'review-item'
+
+  const header = document.createElement('li');
+  header.className = 'item-header'
+
+  const name = document.createElement('div');
+  name.className = 'item-name';
   name.innerHTML = review.name;
-  li.appendChild(name);
+  header.appendChild(name);
 
-  const date = document.createElement('p');
+
+
+  const date = document.createElement('div');
+  date.className = 'item-date';
   date.innerHTML = review.date;
-  li.appendChild(date);
+  header.appendChild(date);
 
-  const rating = document.createElement('p');
-  rating.innerHTML = `Rating: ${review.rating}`;
-  li.appendChild(rating);
+  li.appendChild(header);
 
-  const comments = document.createElement('p');
+
+  const extra = document.createElement('div');
+  extra.className = 'item-extra';
+  
+  const rating = document.createElement('div');
+  rating.setAttribute('data-rating', review.rating);
+  rating.className = 'item-rating';
+  rating.appendChild(getStarsHtml(review.rating));
+  extra.appendChild(rating);
+  li.appendChild(extra);
+
+  const body = document.createElement('li');
+  body.className = 'item-body'
+
+  const comments = document.createElement('div');
   comments.innerHTML = review.comments;
-  li.appendChild(comments);
+  body.appendChild(comments);
+
+  li.appendChild(body);
 
   return li;
 }
+
+getStarsHtml = (digit) => {
+  if (typeof digit !== 'number') return '';
+  let container = document.createDocumentFragment();
+
+  for(let i = digit; i >= 0; i--) {
+    let star = document.createElement('span');
+    star.className = 'i i-star';
+    container.appendChild(star);
+  }
+
+  return container;
+}  
 
 /**
  * Add restaurant name to the breadcrumb navigation menu

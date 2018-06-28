@@ -202,9 +202,12 @@ addMarkersToMap = (restaurants = self.restaurants) => {
   restaurants.forEach(restaurant => {
     // Add marker to the map
     const marker = DBHelper.mapMarkerForRestaurant(restaurant, self.map);
-    google.maps.event.addListener(marker, 'click', () => {
-      window.location.href = marker.url
-    });
+    // google.maps.event.addListener(marker, 'click', () => {
+    //   window.location.href = marker.url
+    // });
+    // $('#map').on('click', '.trigger', function() {
+    //     alert('Hello from Toronto!');
+    // });
     self.markers.push(marker);
   });
 } 
