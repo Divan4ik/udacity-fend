@@ -156,31 +156,67 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
  * Create restaurant HTML.
  */
 createRestaurantHTML = (restaurant) => {
-  const li = document.createElement('li');
+  const article = document.createElement('article');
+  article.className = 'restaurant-item';
+
+  //header
+  const header = document.createElement('header');
+  header.className = 'item-header';
+
+  const name = document.createElement('h2');
+  name.innerHTML = restaurant.name;
+  header.append(name);
+
+  //body
+  const body = document.createElement('section');
+  body.className = 'item-body';
+
+  //media
+  const media = document.createElement('div');
+  media.className = 'restaurant-media';
 
   const image = document.createElement('img');
   image.className = 'restaurant-img';
   image.src = DBHelper.imageUrlForRestaurant(restaurant);
-  li.append(image);
+  body.append(image);
 
-  const name = document.createElement('h1');
-  name.innerHTML = restaurant.name;
-  li.append(name);
+  //footer
+  const footer = document.createElement('footer');
+  footer.className = 'item-footer';
+
+  const info = document.createElement('div');
+  info.className = 'item-details';
 
   const neighborhood = document.createElement('p');
+  neighborhood.className = 'restaurant-neighborhood';
   neighborhood.innerHTML = restaurant.neighborhood;
-  li.append(neighborhood);
+  info.append(neighborhood);
 
   const address = document.createElement('p');
+  address.className = 'restaurant-address';
   address.innerHTML = restaurant.address;
-  li.append(address);
+  info.append(address);
+
+
+  const actions = document.createElement('div');
+  actions.className = 'item-actions';
 
   const more = document.createElement('a');
   more.innerHTML = 'View Details';
+  more.setAttribute('role', 'button');
+  more.className = 'button restaurant-more';
   more.href = DBHelper.urlForRestaurant(restaurant);
-  li.append(more)
+  actions.append(more)
 
-  return li
+  body.append(media);
+  footer.append(info);
+  footer.append(actions);
+
+  article.append(header);
+  article.append(body);
+  article.append(footer);
+
+  return article
 }
 
 /**

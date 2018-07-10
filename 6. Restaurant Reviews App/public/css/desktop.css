@@ -1,0 +1,26 @@
+body {
+	background-image: url(/img/dining-room.jpg);
+	background-size: contain;
+	background-repeat: no-repeat;
+}
+
+#map {
+  width: 930px;
+  margin: 0 auto;
+  height: 50vh;
+
+}
+
+.container {
+	width: 930px;
+}
+
+.filter {
+	display: flex;
+	justify-content: space-around;
+}
+
+.filter-item {
+	padding: 0 20px;
+	width: auto;
+}

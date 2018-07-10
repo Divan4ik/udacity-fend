@@ -1,0 +1,28 @@
+/**
+* BOXES
+*
+*
+*/
+
+.button {
+	display: inline-block;
+	background: #e67e22;
+	color: white;
+	min-height: 32px;
+	margin: 15px;
+	border-radius: 3px;
+	padding: 0.35rem 1.5rem;
+}
+
+.box {
+    background: #fff;
+}
+
+.box-floating {
+	box-shadow: 0 1px #FFFFFF inset, 0 1px 3px rgba(34, 25, 25, 0.4);
+}
+
+.box-rounded {
+	border-top-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
