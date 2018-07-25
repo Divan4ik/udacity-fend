@@ -25,6 +25,57 @@ body,td,th,p{
 	vertical-align: middle;
 }
 
+#restaurants-list {
+	margin-top: 10px;
+}
+
 #restaurants-list .item-details {
 	text-align: left;
+}
+
+.inside header {
+position: fixed;
+top: 0;
+height: 100px;
+width: 100%;
+z-index: 1000;
+}
+
+#restaurant-container, #reviews-container {
+border-bottom: 1px solid #d9d9d9;
+border-top: 1px solid #fff;
+padding: 120px 0 30px;
+width: 50%;
+}
+
+#reviews-container {
+padding: 20px 0 80px;
+}
+
+#reviews-list li {
+margin: 0 0 30px;
+}
+
+
+
+.inside #map-container {
+background: blue none repeat scroll 0 0;
+height: calc(100vh - 100px);
+position: fixed;
+right: 0;
+top: 100px;
+width: 50%;
+}
+
+.inside #footer {
+bottom: 0;
+position: absolute;
+width: 50%;
+}
+
+
+.inside #map {
+background-color: #ccc;
+height: 100%;
+width: 100%;
 }

@@ -41,19 +41,15 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
 }
 
 
-header {
+.app-header {
   position: fixed;
   top: 0;
-  height: 100px;
+  height: 45px;
   width: 100%;
   z-index: 1001;
   background: #333;
 }
 
-header {
-  height: 100px;
-  width: 100%;
-}
 
 .container {
   width: 100%;
@@ -65,7 +61,7 @@ header {
 #maincontent {
   background-color: #f3f3f3;
   min-height: 100%;
-  padding-top: 100px;
+  padding-top: 0px;
 }
 
 #footer {
@@ -423,56 +419,4 @@ nav h1 a {
 
 #restaurant-cuisine {
   width: 100%;
-}
-
-@media screen
-and (min-width: 700px) {
-
-  .inside header {
-    position: fixed;
-    top: 0;
-    height: 100px;
-    width: 100%;
-    z-index: 1000;
-  }
-
-  #restaurant-container, #reviews-container {
-    border-bottom: 1px solid #d9d9d9;
-    border-top: 1px solid #fff;
-    padding: 120px 0 30px;
-    width: 50%;
-  }
-
-  #reviews-container {
-    padding: 20px 0 80px;
-  }
-
-  #reviews-list li {
-    margin: 0 0 30px;
-  }
-
-
-
-  .inside #map-container {
-    background: blue none repeat scroll 0 0;
-    height: calc(100vh - 100px);
-    position: fixed;
-    right: 0;
-    top: 100px;
-    width: 50%;
-  }
-
-  .inside #footer {
-    bottom: 0;
-    position: absolute;
-    width: 50%;
-  }
-
-
-  .inside #map {
-    background-color: #ccc;
-    height: 100%;
-    width: 100%;
-  }
-
 }

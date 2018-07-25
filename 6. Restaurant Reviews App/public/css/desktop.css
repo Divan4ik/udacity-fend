@@ -4,6 +4,14 @@ body {
 	background-repeat: no-repeat;
 }
 
+.app-header {
+	height: 45px;
+}
+
+#maincontent {
+	padding-top: 10px;
+}
+
 #map {
   width: 930px;
   margin: 0 auto;
@@ -17,10 +25,22 @@ body {
 
 .filter {
 	display: flex;
-	justify-content: space-around;
+	
+	justify-content: space-between;
 }
 
-.filter-item {
+.filter-options .filter-item {
 	padding: 0 20px;
-	width: auto;
+	width: 445px;
+}
+
+#restaurants-list {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+#restaurants-list .restaurant-item {
+	width: 460px;
+	display: inline-block;
 }
