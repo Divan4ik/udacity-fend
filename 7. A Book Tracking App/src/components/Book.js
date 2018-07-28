@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
 
 class Book extends React.Component {
   render() {
@@ -7,8 +6,6 @@ class Book extends React.Component {
     let thumbnail = this.props.imageLinks.smallThumbnail || '',
           authors = this.props.authors? this.props.authors[0] : '',
           shelf = this.props.shelf || 'none';
-
-    console.log(this.props);
     
     return (
       <li>

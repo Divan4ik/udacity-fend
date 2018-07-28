@@ -39,11 +39,9 @@ class Search extends React.Component {
 				      		this.props.books.map(bookInChelf => {
 				      			if(book.id === bookInChelf.id)
 			      					book.shelf = bookInChelf.shelf 
-			      			})
+			      			});
 			      		
-			      			return (
-			      				<Book key={book.id} {...book} />
-		      				)
+			      			return ( <Book key={book.id} moveTo={this.props.moveTo} {...book} />  )
 	      				}) }
 				    </ol>
 				  </div>
