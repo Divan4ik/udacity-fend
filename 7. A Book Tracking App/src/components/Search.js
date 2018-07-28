@@ -8,7 +8,7 @@ class Search extends React.Component {
 		super(props);
 
 		this.state = {
-		  books: []
+		  searchedBooks: []
 		}
 	}
 
@@ -17,12 +17,12 @@ class Search extends React.Component {
 
 		this.props.getBooks(query)
 			.then( data => {
-				this.setState({ books: data });
+				if(data.error) return;
+				this.setState({ searchedBooks: data });
 			})
 	}
 
 	// добавить в шкаф
-
 	render() {
 		return (
 			<div className="search-books">
@@ -35,8 +35,16 @@ class Search extends React.Component {
 				<div className="search-books-results">
 					<div className="search-books-results">
 				    <ol className="books-grid">
-				      { console.log(this.state.books) }
-				      { [].map.call(this.state.books, book => ( <Book key={book.id} {...book} />) ) }
+				      	{ this.state.searchedBooks.map(book => {
+				      		this.props.books.map(bookInChelf => {
+				      			if(book.id === bookInChelf.id)
+			      					book.shelf = bookInChelf.shelf 
+			      			})
+			      		
+			      			return (
+			      				<Book key={book.id} {...book} />
+		      				)
+	      				}) }
 				    </ol>
 				  </div>
 				</div>
