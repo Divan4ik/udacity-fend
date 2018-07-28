@@ -58,7 +58,7 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
   flex-direction: column;
 }
 
-#maincontent {
+.maincontent {
   background-color: #f3f3f3;
   min-height: 100%;
   padding-top: 0px;
@@ -313,12 +313,7 @@ nav h1 a {
   display: flex-box;
   flex-wrap: wrap;
 }
-#reviews-list li {
-  list-style-type: none;
-  margin: 0 0 30px;
-  overflow: hidden;
-  position: relative;
-}
+
 #reviews-list li p {
   margin: 0 0 10px;
 }
@@ -328,7 +323,17 @@ nav h1 a {
 }
 
 .review-item {
+  list-style-type: none;
+  margin: 0 0 30px;
+  overflow: hidden;
+  position: relative;
+  background-color: white;
+  border-top-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
 
+.review-item .item-body{
+  margin: 0 0 10px;
 }
 
 .review-item .item-header {

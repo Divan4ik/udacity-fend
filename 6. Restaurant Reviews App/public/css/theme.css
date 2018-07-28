@@ -14,6 +14,13 @@
 	padding: 0.35rem 1.5rem;
 }
 
+a.button:hover, a.button:focus {
+    color: white;
+    text-decoration: none;
+    background: #eb8429;
+}
+
+
 .box {
     background: #fff;
 }

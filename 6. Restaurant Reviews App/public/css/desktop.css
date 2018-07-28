@@ -1,14 +1,8 @@
-body {
-	background-image: url(/img/dining-room.jpg);
-	background-size: contain;
-	background-repeat: no-repeat;
-}
-
 .app-header {
 	height: 45px;
 }
 
-#maincontent {
+.maincontent {
 	padding-top: 10px;
 }
 
@@ -23,11 +17,6 @@ body {
 	width: 930px;
 }
 
-.filter {
-	display: flex;
-	
-	justify-content: space-between;
-}
 
 .filter-options .filter-item {
 	padding: 0 20px;
@@ -43,4 +32,10 @@ body {
 #restaurants-list .restaurant-item {
 	width: 460px;
 	display: inline-block;
+}
+
+
+.inside .maincontent {
+	display: flex;
+	position: relative;
 }

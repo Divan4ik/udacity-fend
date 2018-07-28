@@ -3,7 +3,6 @@ body,td,th,p{
 }
 
 #map {
-  width: 600px;
   margin: 0 auto;
   height: 50vh;
 
@@ -11,6 +10,17 @@ body,td,th,p{
 
 .container {
 	width: 600px;
+}
+
+
+.filter {
+	display: flex;
+	justify-content: space-between;
+}
+
+.filter-options {
+    margin-top: 10px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.15);
 }
 
 /* ====================== Restaurant Listing ====================== */
@@ -33,49 +43,42 @@ body,td,th,p{
 	text-align: left;
 }
 
-.inside header {
-position: fixed;
-top: 0;
-height: 100px;
-width: 100%;
-z-index: 1000;
-}
-
 #restaurant-container, #reviews-container {
-border-bottom: 1px solid #d9d9d9;
-border-top: 1px solid #fff;
-padding: 120px 0 30px;
-width: 50%;
+	border-bottom: 1px solid #d9d9d9;
+	border-top: 1px solid #fff;
+	padding: 120px 0 30px;
 }
 
 #reviews-container {
-padding: 20px 0 80px;
+	padding: 20px 0 80px;
 }
 
 #reviews-list li {
-margin: 0 0 30px;
+	margin: 0 0 30px;
 }
 
-
+.inside #restaurant-container {
+	width: 50%;
+}
 
 .inside #map-container {
-background: blue none repeat scroll 0 0;
-height: calc(100vh - 100px);
-position: fixed;
-right: 0;
-top: 100px;
-width: 50%;
+	background: blue none repeat scroll 0 0;
+	height: calc(100vh - 100px);
+	position: fixed;
+	right: 0;
+	top: 100px;
+	width: 50%;
 }
 
 .inside #footer {
-bottom: 0;
-position: absolute;
-width: 50%;
+	bottom: 0;
+	position: absolute;
+	width: 50%;
 }
 
 
 .inside #map {
-background-color: #ccc;
-height: 100%;
-width: 100%;
+	background-color: #ccc;
+	height: 100%;
+	width: 100%;
 }
