@@ -165,6 +165,7 @@ createRestaurantHTML = (restaurant) => {
 
   const name = document.createElement('h2');
   name.innerHTML = restaurant.name;
+  name.setAttribute('tabinex', 0);
   header.append(name);
 
   //body
@@ -174,6 +175,7 @@ createRestaurantHTML = (restaurant) => {
   //media
   const media = document.createElement('div');
   media.className = 'restaurant-media';
+  media.setAttribute('tabindex', 0);
 
   const image = document.createElement('img');
   image.className = 'restaurant-img';
@@ -187,6 +189,7 @@ createRestaurantHTML = (restaurant) => {
 
   const info = document.createElement('div');
   info.className = 'item-details';
+  info.setAttribute('tabindex', 0);
 
   const neighborhood = document.createElement('p');
   neighborhood.className = 'restaurant-neighborhood';
@@ -231,6 +234,9 @@ addMarkersToMap = (restaurants = self.restaurants) => {
     function onClick() {
       window.location.href = marker.options.url;
     }
+    marker.options.keyboard = false;
+    var $icon = $(marker._icon);
+    $icon.attr('tabindex', -1);
     self.markers.push(marker);
   });
 
@@ -247,5 +253,4 @@ addMarkersToMap = (restaurants = self.restaurants) => {
     // });
     self.markers.push(marker);
   });
-} 
-
+}

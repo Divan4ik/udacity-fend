@@ -420,3 +420,11 @@ nav h1 a {
 #restaurant-cuisine {
   width: 100%;
 }
+
+.skip-link:focus {
+    position: absolute;
+    display: block;
+    background: white;
+    z-index: 1002;
+    padding: 10px;
+}

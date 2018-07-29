@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
+  <link rel="stylesheet" src="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.css" />
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" media="screen and (min-width: 768px)" href="css/tablet.css">
   <link rel="stylesheet" media="screen and (min-width: 1024px)" href="css/desktop.css">
@@ -11,9 +11,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <title>Restaurant Reviews</title>
+  <link rel="manifest" href="/data/manifest.json">
+  <meta name="theme-color" content="#252831">
 </head>
 
 <body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
   <section id="app-root">
     <nav>
       <div style="height:45px">
@@ -25,11 +28,11 @@
       </div>
     </nav>
     
-    <main class="maincontent">
+    <main class="maincontent" >
       <section id="map-container">
-        <div id="map"></div>
+        <div id="map" role="application"></div>
       </section>
-      <div class="container">
+      <div id="main-content" class="container" role="main">
         <section class="filter-options">
           <h2>Filter Results</h2>
           <div class="filter">
@@ -51,7 +54,16 @@
   <script type="application/javascript" charset="utf-8" src="js/dbhelper.js"></script>
   <script type="application/javascript" charset="utf-8" src="js/main.js"></script>
   <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places&callback=initMap"></script> -->
-
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js', {scope: '/'})
+      .then(function(reg) {
+        console.log('Registration success');
+      }).catch(function(error) {
+        console.log('Registration failed with ' + error);
+      });
+    }
+  </script>
   <footer id="footer">
     Copyright (c) 2017 <a href="/"><strong>Restaurant Reviews</strong></a> All Rights Reserved.
   </footer>
