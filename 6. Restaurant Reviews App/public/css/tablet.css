@@ -82,3 +82,9 @@ body,td,th,p{
 	height: 100%;
 	width: 100%;
 }
+
+
+.inside .base-container {
+    width: 50%;
+    margin: 0;
+}

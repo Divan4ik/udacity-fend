@@ -30,31 +30,17 @@ var staticCacheName = 'app-cache-v2';
 self.addEventListener('install', function(event) {
   event.waitUntil(
      caches.open(staticCacheName)
-    .then(cache => cache.addAll(filesToCache))
+      .then(cache => cache.addAll(filesToCache))
   );
 });
 
 self.addEventListener('fetch', function(event) {
-  event.respondWith(
-    caches.match(event.request)
-      .then(function(response) {
-        if (response) {
-          return response;
-        }
-      }
-    )
-  );
-});
 
-self.addEventListener('activate', function(event) {
-  event.waitUntil(
-    caches.keys().then(function(cacheNames) {
-      return Promise.all(
-        cacheNames.filter(function(cacheName) {
-        }).map(function(cacheName) {
-          return caches.delete(cacheName);
-        })
-      );
+  if (event.request.method != 'GET') return;
+
+  event.respondWith(
+    fetch(event.request).catch(function() {
+      return caches.match(event.request);
     })
   );
 });
