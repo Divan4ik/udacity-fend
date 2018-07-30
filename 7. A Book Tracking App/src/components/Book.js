@@ -3,7 +3,7 @@ import React from 'react'
 class Book extends React.Component {
   render() {
 
-    let thumbnail = this.props.imageLinks.smallThumbnail || '',
+    let thumbnail = this.props.imageLinks ? this.props.imageLinks.smallThumbnail || '' : '',
           authors = this.props.authors? this.props.authors[0] : '',
           shelf = this.props.shelf || 'none';
     
