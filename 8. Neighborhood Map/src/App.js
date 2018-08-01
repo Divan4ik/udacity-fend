@@ -1,43 +1,38 @@
 import React, { Component } from 'react'
-import { Button } from 'semantic-ui-react'
-import 'semantic-ui-css/semantic.min.css'
 import Map from './components/Map.js'
+import Sidebar from './components/Sidebar.js'
+import locations from './data/locations.json'
 
 class App extends Component {
+
+  state = {
+    places: []
+  }
+
+  componentDidMount() {
+    console.log(locations);
+    this.setState({places: locations})
+  }
+
   render() {
     return (
-      <div className="ui bottom attached segment pushable">
-        <div className="ui visible inverted left vertical sidebar menu">
-          <a className="item">
-            <i className="home icon"></i>
-            Home
-          </a>
-          <a className="item">
-            <i className="block layout icon"></i>
-            Topics
-          </a>
-          <a className="item">
-            <i className="smile icon"></i>
-            Friends
-          </a>
-          <a className="item">
-            <i className="calendar icon"></i>
-            History
-          </a>
+      <main>
+      <header className="app-header bg-dark px-1">Neighborhood Map (React)</header>
+      <div className="col-container">
+        <div className="col sidebar bg-dark py-1">
+          <Sidebar places={this.state.places} />
         </div>
-        <div className="pusher">
-          <div className="ui basic segment">
-            <h3 className="ui header">Application Content</h3>
-            <Map
-              isMarkerShown
-              googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyAMd1lYuGup8kIljV62MqIDs8C1OVzjlOE&libraries=geometry,drawing,places"
-              loadingElement={<div style={{ height: `100%` }} />}
-              containerElement={<div style={{ height: `400px` }} />}
-              mapElement={<div style={{ height: `100%` }} />}
-            />
-          </div>
+        <div className="col map">
+          <Map
+            googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyAMd1lYuGup8kIljV62MqIDs8C1OVzjlOE&libraries=geometry,drawing,places"
+            loadingElement={<div style={{ height: `100%` }} />}
+            containerElement={<div style={{ height: `calc(100vh - 50px)` }} />}
+            mapElement={<div style={{ height: `100%` }} />}
+            places={this.state.places}
+          />
         </div>
       </div>
+      </main>
     );
   }
 }
