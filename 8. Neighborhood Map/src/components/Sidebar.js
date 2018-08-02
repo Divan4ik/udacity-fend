@@ -1,5 +1,7 @@
 import React from 'react'
 
+/* eslint no-script-url: "error"*/
+
 class Sidebar extends React.Component {
 
   state = {
@@ -12,25 +14,23 @@ class Sidebar extends React.Component {
 	}
 
   toggleClick(id) {
-    this.props.panTo(id)
+    this.props.userClick(id)
   }
 
+  
   updateList(query) {
-
-		if (query === '')
-			this.props.onFilterLocations([]);
-
-		if (query.length < 3)
-			return;
+    if(query === '') {
+       this.props.onFilterLocations( this.props.places )
+    }
 
     let filtered = this.props.places.filter(place => place.name.toLowerCase().indexOf(query.toLowerCase()) !== -1 );
-	   this.props.onFilterLocations( filtered );
+	   this.props.onFilterLocations( filtered )
 	}
 
   render() {
     let locations = this.props.places;
 
-    if(this.props.filteredPlaces.length > 0) {
+    if(this.props.filteredPlaces) {
       locations = this.props.filteredPlaces
     }
 
@@ -44,7 +44,7 @@ class Sidebar extends React.Component {
             { locations.map(  (mark, i) => {
               return (
                 <li key={i}>
-                  <a onClick={(e) => this.toggleClick(mark.id) }href="#">{mark.name}</a>
+                  <a onClick={(e) => this.toggleClick(mark.id) } href={null}>{mark.name}</a>
                 </li>
               )
             }) }
