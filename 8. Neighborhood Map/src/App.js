@@ -41,7 +41,7 @@ class App extends Component {
 
   render() {
     return (
-      <main>
+      <main className="app">
       <header className="app-header bg-dark px-1">Neighborhood Map (React)</header>
       <div className="col-container">
         <div className="col sidebar bg-dark py-1">

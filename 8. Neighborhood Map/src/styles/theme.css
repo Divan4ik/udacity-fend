@@ -41,7 +41,9 @@ body {
 }
 
 .sidebar {
-  width: 300px
+  transition: all .3s ease-in-out;
+  transform: translateX(-100%);
+  width: 0px
 }
 
 .placesList ul {
@@ -56,4 +58,12 @@ body {
 
 .map {
   flex: 1;
+}
+
+
+@media screen and (min-width: 768px) {
+  .sidebar {
+    width: 300px;
+    transform: translateX(0);
+  }
 }
