@@ -3,13 +3,20 @@ import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-map
 
 const Map = withScriptjs(withGoogleMap((props) => {
 
+  let markers = props.places;
+
+  if(props.filteredPlaces.length > 0) {
+    markers = props.filteredPlaces
+  }
+
   return (
     <GoogleMap
       ref={props.onMapMounted}
       defaultZoom={14}
       defaultCenter={{ lat: 40.613928, lng:  -73.997353 }}
     >
-      {props.places.locations.map( (mark, i) => {
+
+      {markers.map( (mark, i) => {
         return (
           <Marker
               ref={props.ref}
