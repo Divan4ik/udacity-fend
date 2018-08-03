@@ -15,6 +15,7 @@ class App extends Component {
 
   state = {
     center: false,
+    menu: false,
     clicked: false,
     places: [],
     filteredPlaces: false
@@ -38,8 +39,14 @@ class App extends Component {
 
   userClickLocation(id) {
     this.setState({
-      clicked: this.getLocationInfo(id)
+      clicked: this.getLocationInfo(id),
+      menu: false
     });
+  }
+
+  // on resolutions more than 768px this param will ignore
+  toggleMenu() {
+    this.setState({ menu: !this.state.menu });
   }
 
   popup(id) {
@@ -51,18 +58,20 @@ class App extends Component {
     return sameLocation[0] || false
   }
 
-  closePopup() {}
-
   render() {
     return (
       <main className="app">
-      <header className="app-header bg-dark px-1">Neighborhood Map (React)</header>
+      <header className="app-header bg-dark px-1">
+        <button onClick={() => this.toggleMenu() } className="toggle-sidebar">
+          <span aria-label="toggle menu">Menu</span>
+        </button>
+        Neighborhood Map (React)
+      </header>
       <div className="col-container">
         <div className="col sidebar bg-dark py-1">
-          <Popup show={this.state.clicked} onClose={()=> this.setState({clicked: false})}/>
           <Sidebar
             onUserSelect={this}
-            popup={this.popup}
+            show={this.state.menu}
             userClick={this.userClickLocation}
             onFilterLocations={this.onFilterLocations}
             filteredPlaces={this.state.filteredPlaces}
@@ -75,8 +84,8 @@ class App extends Component {
             places={this.state.places}
             filteredPlaces={this.state.filteredPlaces}
             onMapMounted={this.onMapMounted}
-            popup={this.popup}
           />
+          <Popup show={this.state.clicked} onClose={()=> this.setState({clicked: false, menu: true})}/>
         </div>
       </div>
       </main>

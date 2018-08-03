@@ -18,6 +18,7 @@ body {
 .col-container {
   display: flex;
   width: 100%;
+  align-items: stretch;
 }
 
 
@@ -26,10 +27,27 @@ body {
   line-height: 50px;
 }
 
+.toggle-sidebar {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+
 .sidebar {
+  position: absolute;
+  left: 0;
+  top:50px;
+  bottom:0;
+  height: 100%;
+  z-index: 100;
   transition: all .3s ease-in-out;
   transform: translateX(-100%);
-  width: 0px
+}
+
+
+body.menu-in .sidebar {
+  width: 300px;
+  transform: translateX(0);
 }
 
 .filter input[type="text"] {
@@ -85,12 +103,19 @@ body {
 
 .map {
   flex: 1;
+  position: relative;
 }
 
 
 @media screen and (min-width: 768px) {
   .sidebar {
+    position: static;
     width: 300px;
+    height: auto;
     transform: translateX(0);
+  }
+
+  .toggle-sidebar {
+    display: none;
   }
 }

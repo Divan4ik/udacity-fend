@@ -64,6 +64,15 @@ class Map extends React.Component {
         loadingElement={<div style={{ height: `100%` }} />}
         containerElement={<div style={{ height: `calc(100vh - 50px)` }} />}
         mapElement={<div style={{ height: `100%` }} />}
+        options={{disableDefaultUI:true, styles: [
+            {
+                featureType: 'poi.business',
+                elementType: 'labels',
+                stylers: [
+                    { visibility: 'off' }
+                ]
+            }
+        ]}}
         onMapMounted={this.onMapMounted}
         defaultZoom={14}
         defaultCenter={{ lat: 40.613928, lng:  -73.997353 }}

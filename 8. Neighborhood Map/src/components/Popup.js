@@ -34,9 +34,8 @@ class Popup extends React.Component {
     this.onUserAction = this.onUserAction.bind(this)
   }
 
-  componentDidMount() {
+    componentDidMount() {
     document.body.classList.toggle('popup-in', !!this.props.show)
-
   }
 
   componentWillReceiveProps(nextProps) {
@@ -68,13 +67,14 @@ class Popup extends React.Component {
     document.body.classList.remove('popup-in')
     document.body.removeEventListener('keydown', this.onUserAction);
     previosActiveElement && previosActiveElement.focus()
+    previosActiveElement = false;
   }
 
   render() {
     return (
       <div tabIndex="-1" role="dialog" className="popup-container">
         <div role="document" className="popup-content">
-        <p><button aria-label="Close" onClick={() => this.props.onClose()} className="close">Back</button></p>
+        <button aria-label="Close" onClick={() => this.props.onClose()} className="close">Back</button>
         <Inner place={this.props.show} />
       </div>
     </div>

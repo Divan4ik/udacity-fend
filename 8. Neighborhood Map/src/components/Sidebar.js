@@ -5,7 +5,8 @@ import React from 'react'
 class Sidebar extends React.Component {
 
   state = {
-    query: ''
+    query: '',
+    show: false
   }
 
   updateQuery = (value) => {
@@ -23,8 +24,19 @@ class Sidebar extends React.Component {
     }
 
     let filtered = this.props.places.filter(place => place.name.toLowerCase().indexOf(query.toLowerCase()) !== -1 );
-	   this.props.onFilterLocations( filtered )
+	  this.props.onFilterLocations( filtered )
 	}
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.show === false) {
+      if(!document.body.classList.contains('menu-in')) return
+      document.body.classList.toggle('menu-in')
+    } else {
+        //ignore disabling if props has open
+      if(document.body.classList.contains('menu-in')) return
+      document.body.classList.toggle('menu-in')
+    }
+  }
 
   render() {
     let locations = this.props.places;
@@ -34,7 +46,7 @@ class Sidebar extends React.Component {
     }
 
     return (
-      <div>
+      <div aria-hidden="true">
         <div className="filter">
           <input type="text" onChange={(event) => this.updateQuery(event.target.value)} value={this.state.query} placeholder="Search by title or author"/>
         </div>
