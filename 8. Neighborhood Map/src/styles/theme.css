@@ -2,7 +2,7 @@
   margin:0;
   padding:0;
   box-sizing: border-box;
- }
+}
 
 html, body {
   height: 100%;
@@ -11,28 +11,51 @@ html, body {
 }
 
 body {
-    font: 15px/18px "Roboto", Helvetica, sans-sefif;
-    font-weight: 300;
+  font: 15px/18px "Roboto", Helvetica, sans-sefif;
+  font-weight: 300;
 }
 
+/* GRID */
 .col-container {
   display: flex;
   width: 100%;
   align-items: stretch;
 }
 
-
+/* HEADER */
 .app-header {
   height: 50px;
   line-height: 50px;
 }
 
 .toggle-sidebar {
-    display: inline-block;
-    margin-right: 10px;
+  display: inline-block;
+  margin-right: 10px;
 }
 
+.client-status {
+  display: inline-block;
+  float: right;
 
+}
+.client-status:after {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  margin-left: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.client-status[data-online="true"]:after {
+  background: #19d619;
+}
+
+.client-status[data-online="false"]:after {
+  background: #d61919;
+}
+
+/* SIDEBAR */
 .sidebar {
   position: absolute;
   left: 0;
@@ -51,23 +74,23 @@ body.menu-in .sidebar {
 }
 
 .filter input[type="text"] {
-    background: transparent;
-    border: none;
-    padding: 10px 20px;
-    width: 100%;
-    outline: none;
-    box-sizing: border-box;
-    transition: all .15s ease-in-out
+  background: transparent;
+  border: none;
+  padding: 10px 20px;
+  width: 100%;
+  outline: none;
+  box-sizing: border-box;
+  transition: all .15s ease-in-out
 }
 
 
 .filter input[type="text"]:focus,
 .filter input[type="text"]:not(:placeholder-shown) {
-    background: #fff;
-    border: none;
-    padding: 10px 20px;
-    max-width: 100%;
-    box-sizing: border-box;
+  background: #fff;
+  border: none;
+  padding: 10px 20px;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .placesList {
@@ -81,13 +104,13 @@ body.menu-in .sidebar {
 }
 
 .placesList .place-item {
-    cursor:  pointer;
-    outline: none;
+  cursor:  pointer;
+  outline: none;
 }
 
 .placesList .place-item:focus,
 .placesList .place-item:hover {
-    background: rgba(255,255,255,.10)
+  background: rgba(255,255,255,.10)
 }
 
 .placesList .place-item .place-link {
@@ -101,6 +124,7 @@ body.menu-in .sidebar {
   text-overflow: ellipsis;
 }
 
+/* MAP */
 .map {
   flex: 1;
   position: relative;

@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import Map from './components/Map.js'
-import Sidebar from './components/Sidebar.js'
-import Popup from './components/Popup.js'
-import { getAll } from './data/FoursquareAPI.js'
+import Map from './components/Map'
+import Sidebar from './components/Sidebar'
+import Popup from './components/Popup'
+import Status from './components/Status'
+import { getAll } from './data/FoursquareAPI'
 
 class App extends Component {
 
@@ -46,7 +47,10 @@ class App extends Component {
 
   // on resolutions more than 768px this param will ignore
   toggleMenu() {
-    this.setState({ menu: !this.state.menu });
+    this.setState({
+       menu: !this.state.menu,
+       clicked: false,
+    });
   }
 
   popup(id) {
@@ -65,6 +69,7 @@ class App extends Component {
         <button onClick={() => this.toggleMenu() } className="toggle-sidebar">
           <span aria-label="toggle menu">Menu</span>
         </button>
+        <Status />
         Neighborhood Map (React)
       </header>
       <div className="col-container">
