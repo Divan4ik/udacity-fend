@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Map from './components/Map.js'
 import Sidebar from './components/Sidebar.js'
 import Popup from './components/Popup.js'
-import locations from './data/locations.json'
+import { getAll } from './data/FoursquareAPI.js'
 
 class App extends Component {
 
@@ -21,7 +21,13 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.setState({places: locations.locations})
+    getAll()
+      .then(data => {
+        this.setState({ places: data.venues})
+      })
+      .catch(error => {
+        this.setState({error: 'Cannot load data, check internet connection'})
+      })
   }
 
   onFilterLocations(locations) {
@@ -53,7 +59,15 @@ class App extends Component {
       <header className="app-header bg-dark px-1">Neighborhood Map (React)</header>
       <div className="col-container">
         <div className="col sidebar bg-dark py-1">
-          <Sidebar onUserSelect={this} popup={this.popup} userClick={this.userClickLocation} onFilterLocations={this.onFilterLocations} filteredPlaces={this.state.filteredPlaces} places={this.state.places} />
+          <Popup show={this.state.clicked} onClose={()=> this.setState({clicked: false})}/>
+          <Sidebar
+            onUserSelect={this}
+            popup={this.popup}
+            userClick={this.userClickLocation}
+            onFilterLocations={this.onFilterLocations}
+            filteredPlaces={this.state.filteredPlaces}
+            places={this.state.places}
+          />
         </div>
         <div className="col map">
           <Map
@@ -64,7 +78,6 @@ class App extends Component {
             popup={this.popup}
           />
         </div>
-        <Popup show={this.state.clicked} onClose={()=> this.setState({clicked: false})}/>
       </div>
       </main>
     );

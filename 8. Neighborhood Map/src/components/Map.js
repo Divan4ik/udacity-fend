@@ -12,11 +12,23 @@ class Map extends React.Component {
   }
 
   state = {
-    map: false
+    map: false,
+    markers: []
   }
 
   panTo(mark) {
-    this.state.map.panTo({lat:mark.latitude, lng: mark.longtitude})
+    this.state.map.panTo({lat:mark.location.lat, lng: mark.location.lng})
+    this.state.map.setZoom(15)
+  }
+
+  setBounds() {
+    let bounds = new window.google.maps.LatLngBounds()
+
+    for (var i = 0; i < this.state.markers.length; i++) {
+        bounds.extend({ lat: this.state.markers[i].location.lat, lng: this.state.markers[i].location.lng});
+    }
+
+    this.state.map.fitBounds(bounds);
   }
 
   onMapMounted(ref) {
@@ -26,20 +38,26 @@ class Map extends React.Component {
     }
   }
 
-  componentWillReceiveProps(newProps) {
-    if(newProps.panTo) {
-      this.panTo(newProps.panTo)
+  componentDidUpdate() {
+    if(!this.props.panTo && this.state.map && this.state.markers.length > 0) {
+      this.setBounds()
     }
   }
 
-  render() {
-    let markers = this.props.places;
+  componentWillReceiveProps(newProps) {
+    if(newProps.panTo)
+      this.panTo(newProps.panTo)
+
+    let markers = newProps.places;
 
     if(this.props.filteredPlaces) {
-      markers = this.props.filteredPlaces
+      markers = newProps.filteredPlaces
     }
 
+    this.setState({markers:markers})
+  }
 
+  render() {
     return (
       <MapCanvas
         googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyAMd1lYuGup8kIljV62MqIDs8C1OVzjlOE&libraries=geometry,drawing,places"
@@ -51,13 +69,12 @@ class Map extends React.Component {
         defaultCenter={{ lat: 40.613928, lng:  -73.997353 }}
       >
 
-        {markers.map( (mark, i) => {
+        {this.state.markers.length > 0 && this.state.markers.map( (mark, i) => {
           return (
             <Marker
             ref={this.props.ref}
             key={mark.id}
-            position={{ lat: mark.latitude, lng: mark.longtitude}}
-            label={mark.name}
+            position={{ lat: mark.location.lat, lng: mark.location.lng}}
             />
           )
         })}

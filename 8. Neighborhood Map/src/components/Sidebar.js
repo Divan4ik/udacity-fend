@@ -17,7 +17,6 @@ class Sidebar extends React.Component {
     this.props.userClick(id)
   }
 
-  
   updateList(query) {
     if(query === '') {
        this.props.onFilterLocations( this.props.places )
@@ -36,20 +35,20 @@ class Sidebar extends React.Component {
 
     return (
       <div>
-        <div className="filter px-1">
+        <div className="filter">
           <input type="text" onChange={(event) => this.updateQuery(event.target.value)} value={this.state.query} placeholder="Search by title or author"/>
         </div>
-        <div className="placesList py-1 px-1">
+        <nav className="placesList py-1 overflow-v">
           <ul className="">
             { locations.map(  (mark, i) => {
               return (
-                <li key={i}>
-                  <a onClick={(e) => this.toggleClick(mark.id) } href={null}>{mark.name}</a>
+                <li tabIndex="0" role="button" onKeyPress={(e) => this.toggleClick(mark.id) }  className="place-item" key={i}>
+                  <span  className="place-link px-1"  onClick={(e) => this.toggleClick(mark.id) }>{mark.name}</span>
                 </li>
               )
             }) }
           </ul>
-        </div>
+        </nav>
       </div>
     )
   }
