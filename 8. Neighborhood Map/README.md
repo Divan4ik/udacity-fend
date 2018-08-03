@@ -20,7 +20,3 @@ git clone git@github.com:Divan4ik/udacity-fend.git
 
 * [tomchentw/react-google-maps](https://github.com/tomchentw/react-google-maps)
 react-google-maps provide effient way to integrate Google Maps Api and start to work for primary app goals. Is used to get map instance inside component.
-
-### Offline ready... or not?
-
-It seems to very hard to cache map
