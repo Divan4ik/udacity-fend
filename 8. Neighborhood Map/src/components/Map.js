@@ -16,6 +16,10 @@ class Map extends React.Component {
     markers: []
   }
 
+  toggleClick(id) {
+    this.props.userClick(id)
+  }
+
   panTo(mark) {
     this.state.map.panTo({lat:mark.location.lat, lng: mark.location.lng})
     this.state.map.setZoom(15)
@@ -83,6 +87,7 @@ class Map extends React.Component {
             <Marker
             ref={this.props.ref}
             key={mark.id}
+            onClick={(e) => this.toggleClick(mark.id)}
             position={{ lat: mark.location.lat, lng: mark.location.lng}}
             />
           )

@@ -89,6 +89,7 @@ class App extends Component {
             places={this.state.places}
             filteredPlaces={this.state.filteredPlaces}
             onMapMounted={this.onMapMounted}
+            userClick={this.userClickLocation}
           />
           <Popup show={this.state.clicked} onClose={()=> this.setState({clicked: false, menu: true})}/>
         </div>
