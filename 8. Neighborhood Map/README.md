@@ -19,4 +19,9 @@ git clone git@github.com:Divan4ik/udacity-fend.git
 ### Dependencies
 
 * [tomchentw/react-google-maps](https://github.com/tomchentw/react-google-maps)
-react-google-maps provide effient way to integrate Google Maps Api and start to work for primary app goals. Is used to get map instance inside component.
+react-google-maps provide efficient way to integrate Google Maps Api and start to work for primary app goals. Is used to get map instance inside component.
+
+
+### Third party API
+
+this project uses Foursquare API to get info about burrito restaurants in New-York. to set your own api key please visit [link](https://developer.foursquare.com/), then update data/FoursquareAPI.js 

@@ -13,6 +13,8 @@ const url = new URL('https://api.foursquare.com/v2/venues/search');
 Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
 
 /*
+* example of curl request
+*
 'https://api.foursquare.com/v2/venues/explore' \
     -d client_id="CLIENT_ID" \
     -d client_secret="CLIENT_SECRET" \
@@ -27,8 +29,10 @@ const headers = {}
 export const getAll = () => {
   return new Promise( (res, rej) => {
 
+		// checkout cache
     let venues = localStorage.venues
 
+		// get lsit and save it
     if(!venues) {
       fetch(url, { headers })
         .then(res => res.json())

@@ -2,12 +2,11 @@
 const filesToCache = [
   '.',
   '/',
-  '/index.html',
-  '/sw.js',
   '/static/js/bundle.js',
+  '/index.html',
 ];
 
-const staticCacheName = 'app-cache-v3';
+const staticCacheName = 'app-cache-v5';
 
 self.addEventListener('install', function(event) {
   event.waitUntil(
@@ -16,15 +15,13 @@ self.addEventListener('install', function(event) {
   );
 });
 
-self.addEventListener('fetch', function(e) {
+self.addEventListener('fetch', function(event) {
 
-  if (e.request.method != 'GET') return;
+  if (event.request.method != 'GET') return;
 
-  e.respondWith(
-    fetch(e.request).catch(function() {
-      return caches.match(e.request);
-    }).catch(error => {
-      console.log('Fetch failed: ', error);
+  event.respondWith(
+    fetch(event.request).catch(function() {
+      return caches.match(event.request);
     })
   );
 

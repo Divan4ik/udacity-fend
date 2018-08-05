@@ -2,6 +2,10 @@ import React from 'react'
 
 /* eslint no-script-url: "error"*/
 
+/*
+* Sidebar component
+* Iterate locations fro App component and provide functionality to filter them
+*/
 class Sidebar extends React.Component {
 
   state = {
@@ -9,24 +13,41 @@ class Sidebar extends React.Component {
     show: false
   }
 
+  /*
+  * this function helps to save query after update component
+  */
   updateQuery = (value) => {
 		this.setState({ query: value });
 		this.updateList(value);
 	}
 
+  /*
+  * user click handler
+  */
+
   toggleClick(id) {
     this.props.userClick(id)
   }
 
+  /*
+  * this function updates list of locations
+  */
   updateList(query) {
+
+    // if query emptry, show all locations
     if(query === '') {
        this.props.onFilterLocations( this.props.places )
     }
 
+    // else filter and update App state
     let filtered = this.props.places.filter(place => place.name.toLowerCase().indexOf(query.toLowerCase()) !== -1 );
 	  this.props.onFilterLocations( filtered )
 	}
 
+  /*
+  * This function for mobile devices and small screens
+  * it collapse sidebar through body class change
+  */
   componentWillReceiveProps(nextProps) {
     if(nextProps.show === false) {
       if(!document.body.classList.contains('menu-in')) return
@@ -39,6 +60,7 @@ class Sidebar extends React.Component {
   }
 
   render() {
+    // show all locations or filtered
     let locations = this.props.places;
 
     if(this.props.filteredPlaces) {
