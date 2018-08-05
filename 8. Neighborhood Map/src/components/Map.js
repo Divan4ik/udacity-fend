@@ -98,7 +98,7 @@ class Map extends React.Component {
   render() {
     return (
       <MapCanvas
-        googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=1AIzaSyBqeCAur3WuwLz9vaZyfuVA4WzfqSFjmiM&libraries=geometry,drawing,places"
+        googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyBqeCAur3WuwLz9vaZyfuVA4WzfqSFjmiM&libraries=geometry,drawing,places"
         loadingElement={<div style={{ height: `100%` }} />}
         containerElement={<div style={{ height: `calc(100vh - 50px)` }} />}
         mapElement={<div style={{ height: `100%` }} />}
